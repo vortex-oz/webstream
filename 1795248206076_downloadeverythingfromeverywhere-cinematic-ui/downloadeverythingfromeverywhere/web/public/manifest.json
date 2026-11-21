@@ -1,0 +1,33 @@
+{
+  "id": "/",
+  "name": "downloadeverythingfromeverywhere",
+  "short_name": "downloadeverythingfromeverywhere",
+  "description": "Free download movies, TV shows & anime in 720p, 1080p & 4K. Direct WEB-DL, BluRay, x265 HEVC, dual audio, small size episodes & season packs from many hosts.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "1080x1080",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
