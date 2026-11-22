@@ -1,14 +1,14 @@
 {
   "id": "/",
-  "name": "downloadeverythingfromeverywhere",
-  "short_name": "downloadeverythingfromeverywhere",
+  "name": "ZYRON",
+  "short_name": "ZYRON",
   "description": "Free download movies, TV shows & anime in 720p, 1080p & 4K. Direct WEB-DL, BluRay, x265 HEVC, dual audio, small size episodes & season packs from many hosts.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#121212",
-  "theme_color": "#121212",
+  "background_color": "#080808",
+  "theme_color": "#080808",
   "lang": "en",
   "icons": [
     {
