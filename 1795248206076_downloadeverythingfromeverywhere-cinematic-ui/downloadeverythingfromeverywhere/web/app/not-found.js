@@ -5,7 +5,7 @@ export default function NotFound() {
     <div id="wrap">
       <header id="header">
         <p className="brand">
-          <a href="/">downloadeverythingfromeverywhere</a>
+          <a href="/">ZYRON</a>
           {" • "}
           <a href="/suggest">suggest</a>
         </p>
@@ -14,4 +14,4 @@ export default function NotFound() {
       <p>not found</p>
     </div>
   );
-}
+    }
