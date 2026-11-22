@@ -319,40 +319,42 @@ function statusLabel(st) {
 export function MediaHero({ item }) {
   const [ok, setOk] = useState(true);
   useEffect(() => setOk(true), [item?.backdrop]);
-
-  if (!item) {
-    return <div className="zyron-hero zyron-hero-loading"><p className="status">Loading title…</p></div>;
-  }
+  if (!item) return <div className="zyron-detail-loading"><p className="status">Loading title…</p></div>;
   const isSeries = Array.isArray(item.seasons) && item.seasons.length > 0;
   const score = Number(item.rating || 0);
   return (
-    <section className="zyron-hero">
-      {item.backdrop && ok ? <img className="zyron-hero-backdrop" src={item.backdrop} alt="" width={1280} height={720} onError={() => setOk(false)} /> : null}
-      <div className="zyron-hero-shade" />
-      <div className="zyron-hero-content">
-        <div className="zyron-kicker"><span className="zyron-mark">Z</span> ZYRON ORIGINAL DISCOVERY</div>
-        <h1>{item.name} <span className="zyron-year">{item.year || ""}</span></h1>
-        {item.tagline ? <p className="zyron-tagline">{item.tagline}</p> : null}
-        <div className="zyron-meta">
-          {score > 0 ? <span className="zyron-rating">★ {score.toFixed(1)} <small>TMDB</small></span> : null}
-          {item.voteCount > 0 ? <span>{Number(item.voteCount).toLocaleString()} ratings</span> : null}
-          {item.tags?.slice(0, 4).map((tag) => <span key={tag}>{tag}</span>)}
-          {item.status ? <span>{item.status}</span> : null}
-        </div>
-        {item.overview ? <p className="zyron-overview">{item.overview}</p> : null}
-        <div className="zyron-actions">
-          <a className="zyron-primary" href={isSeries ? "#seasons-area" : "#download-area"}>{isSeries ? "Explore seasons" : "Find downloads"} <span>›</span></a>
-          <a className="zyron-secondary" href="/">⌂ <span>Home</span></a>
+    <section className="zyron-detail-hero">
+      {item.backdrop && ok ? <img className="zyron-detail-backdrop" src={item.backdrop} alt="" onError={() => setOk(false)} /> : null}
+      <div className="zyron-detail-vignette" />
+      <div className="zyron-detail-layout">
+        {item.poster ? <img className="zyron-detail-poster" src={item.poster} alt={`${item.name} poster`} /> : null}
+        <div className="zyron-detail-copy">
+          <span className="zyron-overline">ZYRON ORIGINAL DISCOVERY</span>
+          <h1>{item.name} <span>{item.year || ""}</span></h1>
+          <div className="zyron-detail-meta">
+            {score > 0 ? <span className="zyron-score">★ {score.toFixed(1)} <small>TMDB</small></span> : null}
+            {item.voteCount > 0 ? <span>{Number(item.voteCount).toLocaleString()} ratings</span> : null}
+            {item.runtime ? <span>{item.runtime} min</span> : null}
+            {item.status ? <span>{item.status}</span> : null}
+            <span>{isSeries ? `${item.seasons.length} seasons` : "Movie"}</span>
+          </div>
+          {item.tags?.length ? <div className="zyron-genres">{item.tags.filter((t) => !/^\d+ min$/.test(t) && !/season/.test(t)).slice(0, 4).map((tag) => <span key={tag}>{tag}</span>)}</div> : null}
+          {item.tagline ? <p className="zyron-detail-tagline">{item.tagline}</p> : null}
+          {item.overview ? <p className="zyron-detail-overview">{item.overview}</p> : null}
+          <div className="zyron-detail-links">
+            <a href={isSeries ? "#seasons-area" : "#download-area"} className="zyron-watch-button"><span>▶</span> {isSeries ? "Explore seasons" : "Find downloads"}</a>
+            <a href="/" className="zyron-detail-home">← Back to browse</a>
+          </div>
         </div>
       </div>
       {item.cast?.length ? (
-        <div className="zyron-cast-wrap">
-          <h2>Top cast</h2>
-          <div className="zyron-cast-list">
-            {item.cast.slice(0, 8).map((person) => (
-              <div className="zyron-cast" key={person.id || person.name}>
-                {person.photo ? <img src={person.photo} alt={person.name} loading="lazy" width="54" height="54" /> : <span className="zyron-cast-fallback">{person.name?.slice(0,1)}</span>}
-                <span><b>{person.name}</b>{person.character ? <small>{person.character}</small> : null}</span>
+        <div className="zyron-cast-section">
+          <div className="zyron-rail-heading"><div><h2>Cast & characters</h2><p>Meet the people behind the story</p></div></div>
+          <div className="zyron-cast-rail">
+            {item.cast.slice(0, 10).map((person) => (
+              <div className="zyron-cast-card" key={person.id || person.name}>
+                {person.photo ? <img src={person.photo} alt={person.name} loading="lazy" /> : <span className="zyron-cast-avatar">{person.name?.slice(0,1)}</span>}
+                <b>{person.name}</b><small>{person.character || "Cast"}</small>
               </div>
             ))}
           </div>
@@ -598,17 +600,23 @@ export function DlControl({ label, status, onClick, locked }) {
 
 export function SiteShell({ children }) {
   return (
-    <div id="wrap">
-      <header id="header">
-        <p className="brand">
-          <a href="/">ZYRON</a>
-          {" • "}
-          <a href="/suggest">suggest</a>
-        </p>
-        <QueueMark />
+    <div id="wrap" className="zyron-app zyron-detail-page">
+      <header id="header" className="zyron-topbar">
+        <a className="zyron-wordmark" href="/" aria-label="ZYRON home">ZYRON<span>+</span></a>
+        <nav className="zyron-main-nav" aria-label="Main navigation">
+          <a href="/">Home</a><a href="/#movies">Movies</a><a href="/#series">Series</a><a href="/#anime">Anime</a>
+        </nav>
+        <a className="zyron-search-shortcut" href="/#search-box" aria-label="Search">⌕</a>
       </header>
       {TURNSTILE_SITEKEY && <TurnstileHost />}
       {children}
+      <footer className="zyron-footer"><a className="zyron-wordmark" href="/">ZYRON<span>+</span></a><p>Stories worth staying up for.</p><small>Discover • Explore • Enjoy</small></footer>
+      <nav className="zyron-bottom-nav" aria-label="Bottom navigation">
+        <a href="/"><span>⌂</span><small>Home</small></a>
+        <a href="/#search-box"><span>⌕</span><small>Search</small></a>
+        <a href="/#movies"><span>▣</span><small>Movies</small></a>
+        <a href="/#series"><span>▤</span><small>Series</small></a>
+      </nav>
     </div>
   );
 }

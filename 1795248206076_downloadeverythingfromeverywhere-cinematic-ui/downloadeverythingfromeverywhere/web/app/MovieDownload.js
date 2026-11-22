@@ -73,7 +73,11 @@ export default function MovieDownload({ id, initial = null, error: initialError 
       {movie ? (
         <section id="download-area" className="download-area">
           <div className="section-heading"><span>Available downloads</span><small>Choose your preferred quality</small></div>
-          <p className="dl-status"><DlControl label="Find downloads" status={status} onClick={findDownloads} /></p>
+          <p className="zyron-download-intro">Choose a source and quality after the search finishes.</p>
+          <div className="zyron-bottom-action">
+            <div><b>Ready to watch?</b><small>Search trusted sources for available links.</small></div>
+            <DlControl label="Find download" status={status} onClick={findDownloads} />
+          </div>
           <ResultFold results={results} status={status} />
         </section>
       ) : null}
