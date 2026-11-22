@@ -9,7 +9,7 @@ export default async function Page({ searchParams }) {
     <div id="wrap">
       <header id="header">
         <h1>
-          <a href="/">downloadeverythingfromeverywhere</a>
+          <a href="/">ZYRON</a>
           {" • "}
           <a href="/suggest">suggest</a>
         </h1>
