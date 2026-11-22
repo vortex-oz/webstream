@@ -321,33 +321,44 @@ export function MediaHero({ item }) {
   useEffect(() => setOk(true), [item?.backdrop]);
 
   if (!item) {
-    return (
-      <div className="panel">
-        <p className="status">loading...</p>
-      </div>
-    );
+    return <div className="zyron-hero zyron-hero-loading"><p className="status">Loading title…</p></div>;
   }
+  const isSeries = Array.isArray(item.seasons) && item.seasons.length > 0;
+  const score = Number(item.rating || 0);
   return (
-    <div className="panel">
-      {item.backdrop && ok ? (
-        <img
-          className="backdrop"
-          src={item.backdrop}
-          alt={`Free download ${item.name}${item.year ? ` (${item.year})` : ""}`}
-          width={1280}
-          height={720}
-          onError={() => setOk(false)}
-        />
-      ) : null}
-      <div className="hero-title-row">
-        <h1>
-          {item.name} ({item.year || "?"})
-        </h1>
-        {item.tagline ? <p className="hero-tagline">{item.tagline}</p> : null}
+    <section className="zyron-hero">
+      {item.backdrop && ok ? <img className="zyron-hero-backdrop" src={item.backdrop} alt="" width={1280} height={720} onError={() => setOk(false)} /> : null}
+      <div className="zyron-hero-shade" />
+      <div className="zyron-hero-content">
+        <div className="zyron-kicker"><span className="zyron-mark">Z</span> ZYRON ORIGINAL DISCOVERY</div>
+        <h1>{item.name} <span className="zyron-year">{item.year || ""}</span></h1>
+        {item.tagline ? <p className="zyron-tagline">{item.tagline}</p> : null}
+        <div className="zyron-meta">
+          {score > 0 ? <span className="zyron-rating">★ {score.toFixed(1)} <small>TMDB</small></span> : null}
+          {item.voteCount > 0 ? <span>{Number(item.voteCount).toLocaleString()} ratings</span> : null}
+          {item.tags?.slice(0, 4).map((tag) => <span key={tag}>{tag}</span>)}
+          {item.status ? <span>{item.status}</span> : null}
+        </div>
+        {item.overview ? <p className="zyron-overview">{item.overview}</p> : null}
+        <div className="zyron-actions">
+          <a className="zyron-primary" href={isSeries ? "#seasons-area" : "#download-area"}>{isSeries ? "Explore seasons" : "Find downloads"} <span>›</span></a>
+          <a className="zyron-secondary" href="/">⌂ <span>Home</span></a>
+        </div>
       </div>
-      {item.overview ? <p className="hero-overview">{item.overview}</p> : null}
-      {item.tags?.length ? <p className="hero-tags">{item.tags.join(" • ")}</p> : null}
-    </div>
+      {item.cast?.length ? (
+        <div className="zyron-cast-wrap">
+          <h2>Top cast</h2>
+          <div className="zyron-cast-list">
+            {item.cast.slice(0, 8).map((person) => (
+              <div className="zyron-cast" key={person.id || person.name}>
+                {person.photo ? <img src={person.photo} alt={person.name} loading="lazy" width="54" height="54" /> : <span className="zyron-cast-fallback">{person.name?.slice(0,1)}</span>}
+                <span><b>{person.name}</b>{person.character ? <small>{person.character}</small> : null}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </section>
   );
 }
 
@@ -590,7 +601,7 @@ export function SiteShell({ children }) {
     <div id="wrap">
       <header id="header">
         <p className="brand">
-          <a href="/">downloadeverythingfromeverywhere</a>
+          <a href="/">ZYRON</a>
           {" • "}
           <a href="/suggest">suggest</a>
         </p>
