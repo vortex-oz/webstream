@@ -593,3 +593,35 @@ body { padding:0 0 76px; background:#08090d; color:#f5f3f0; font-family:var(--fo
 }
 
 @media(max-width:760px){.zyron-detail-page .zyron-bottom-nav{display:flex}.zyron-series-dock{bottom:65px}}
+
+/* VidFast streaming player */
+.zyron-detail-links .zyron-watch-button { font: inherit; cursor: pointer; }
+.zyron-secondary-action { display:inline-flex; min-height:44px; align-items:center; justify-content:center; padding:0 17px; border:1px solid #ffffff35; border-radius:4px; color:#f0eee9; text-decoration:none; font-size:11px; font-weight:800; background:#171923b8; }
+.zyron-secondary-action:hover { border-color:var(--accent); background:#20283a; }
+.zyron-episode-download { display:flex; flex-direction:column; align-items:stretch; justify-content:center; gap:7px; }
+.zyron-episode-download .zyron-episode-watch { width:120px; min-height:36px; border:1px solid #7c9cff; border-radius:4px; background:linear-gradient(110deg,#526fb9,#735eb4); color:#fff; font-size:10px; font-weight:900; }
+.zyron-episode-download .zyron-episode-watch:hover { background:linear-gradient(110deg,#6687d8,#8872d4); }
+.zyron-player-overlay { position:fixed; z-index:200; inset:0; display:grid; place-items:center; padding:22px; background:rgba(2,4,9,.88); backdrop-filter:blur(13px); }
+.zyron-player-dialog { width:min(1180px,100%); overflow:hidden; border:1px solid #343b4b; border-radius:12px; background:#090c13; box-shadow:0 30px 120px #000c; animation:zyronPlayerIn .22s ease-out; }
+.zyron-player-bar { display:flex; align-items:center; justify-content:space-between; gap:15px; min-height:65px; padding:11px 17px; background:linear-gradient(100deg,#171d2b,#10131b); }
+.zyron-player-bar > div { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:2px 12px; min-width:0; }
+.zyron-player-brand { grid-row:span 2; color:#f4f6fc; font-family:'Cinzel',Georgia,serif; font-size:16px; font-weight:800; letter-spacing:.1em; }
+.zyron-player-brand span { color:var(--accent); }
+.zyron-player-bar b { overflow:hidden; color:#f5f6fa; font-size:12px; text-overflow:ellipsis; white-space:nowrap; }
+.zyron-player-bar small { color:#929bad; font-size:9px; }
+.zyron-player-close { width:38px; height:38px; flex:0 0 38px; padding:0; border:1px solid #ffffff25; border-radius:50%; background:#ffffff0c; color:#fff; font-size:25px; line-height:1; }
+.zyron-player-frame-wrap { position:relative; width:100%; aspect-ratio:16/9; max-height:calc(100vh - 150px); background:#000; }
+.zyron-player-frame-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; background:#000; }
+.zyron-player-foot { display:flex; justify-content:space-between; gap:12px; padding:9px 15px; color:#778195; font-size:9px; }
+@keyframes zyronPlayerIn { from { opacity:0; transform:translateY(12px) scale(.985); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media(max-width:760px) {
+  .zyron-player-overlay { padding:0; align-items:center; }
+  .zyron-player-dialog { width:100%; border-right:0; border-left:0; border-radius:0; }
+  .zyron-player-frame-wrap { aspect-ratio:16/9; max-height:70vh; }
+  .zyron-player-foot { flex-direction:column; gap:2px; }
+  .zyron-episode-download .zyron-episode-watch { width:84px; min-height:32px; padding:5px 4px; font-size:9px; }
+  .zyron-secondary-action { min-height:40px; padding:0 11px; font-size:10px; }
+}
+@media(max-width:390px) {
+  .zyron-episode-download .zyron-episode-watch { width:74px; font-size:8px; }
+}

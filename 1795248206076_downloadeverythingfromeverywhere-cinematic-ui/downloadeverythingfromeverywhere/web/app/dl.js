@@ -316,7 +316,7 @@ function statusLabel(st) {
   return `getting... (${st.done || 0}/${st.total || "?"})`;
 }
 
-export function MediaHero({ item }) {
+export function MediaHero({ item, onWatch }) {
   const [ok, setOk] = useState(true);
   useEffect(() => setOk(true), [item?.backdrop]);
   if (!item) return <div className="zyron-detail-loading"><p className="status">Loading title…</p></div>;
@@ -342,7 +342,8 @@ export function MediaHero({ item }) {
           {item.tagline ? <p className="zyron-detail-tagline">{item.tagline}</p> : null}
           {item.overview ? <p className="zyron-detail-overview">{item.overview}</p> : null}
           <div className="zyron-detail-links">
-            <a href={isSeries ? "#seasons-area" : "#download-area"} className="zyron-watch-button"><span>▶</span> {isSeries ? "Explore seasons" : "Find downloads"}</a>
+            {onWatch ? <button type="button" className="zyron-watch-button" onClick={onWatch}><span>▶</span> Watch Now</button> : null}
+            <a href={isSeries ? "#seasons-area" : "#download-area"} className="zyron-secondary-action">{isSeries ? "Explore seasons" : "Download options"}</a>
             <a href="/" className="zyron-detail-home">← Back to browse</a>
           </div>
         </div>

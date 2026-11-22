@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DlControl, MediaHero, ResultFold, SiteShell, huntIds, runDownloadStream, gateHunt } from "./dl.js";
 import { loadMovie } from "../lib/tmdb-client.js";
+import VidFastPlayer from "./VidFastPlayer.js";
 
 export default function MovieDownload({ id, initial = null, error: initialError = null, load = loadMovie }) {
   const [movie, setMovie] = useState(initial);
@@ -11,6 +12,7 @@ export default function MovieDownload({ id, initial = null, error: initialError 
   const [err, setErr] = useState(initialError);
   const runId = useRef(0);
   const job = useRef(null);
+  const [playerOpen, setPlayerOpen] = useState(false);
 
   useEffect(() => {
     const my = ++runId.current;
@@ -68,7 +70,8 @@ export default function MovieDownload({ id, initial = null, error: initialError 
 
   return (
     <SiteShell>
-      <MediaHero item={movie} />
+      <MediaHero item={movie} onWatch={() => setPlayerOpen(true)} />
+      {playerOpen && movie ? <VidFastPlayer id={movie.imdb_id || movie.id} title={movie.name} onClose={() => setPlayerOpen(false)} /> : null}
       {err && <p className="status">{err}</p>}
       {movie ? (
         <section id="download-area" className="download-area">

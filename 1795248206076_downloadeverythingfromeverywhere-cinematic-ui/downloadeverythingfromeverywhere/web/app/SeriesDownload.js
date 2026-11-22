@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { DlControl, MediaHero, ResultFold, SiteShell, huntIds, runDownloadStream, gateHunt } from "./dl.js";
 import { loadTv } from "../lib/tmdb-client.js";
+import VidFastPlayer from "./VidFastPlayer.js";
 
 const NEW_MS = 48 * 60 * 60 * 1000;
 
@@ -23,6 +24,7 @@ export default function SeriesDownload({ id, initial = null, error: initialError
   const [collapsed, setCollapsed] = useState({});
   const [seasonSheetOpen, setSeasonSheetOpen] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState(null);
+  const [playingEpisode, setPlayingEpisode] = useState(null);
   const runId = useRef(0);
   const alive = useRef(true);
   const jobs = useRef(new Map());
@@ -138,7 +140,13 @@ export default function SeriesDownload({ id, initial = null, error: initialError
 
   return (
     <SiteShell>
-      <MediaHero item={tv} />
+      <MediaHero item={tv} onWatch={() => {
+        const firstSeason = tv?.seasons?.find((season) => season.episodes?.length);
+        const firstEpisode = firstSeason?.episodes?.[0];
+        if (firstSeason && firstEpisode) setPlayingEpisode({ season: firstSeason.season_number, episode: firstEpisode.episode_number });
+        else document.getElementById("seasons-area")?.scrollIntoView({ behavior: "smooth" });
+      }} />
+      {playingEpisode && tv ? <VidFastPlayer id={tv.imdb_id || tv.id} type="tv" season={playingEpisode.season} episode={playingEpisode.episode} title={tv.name} onClose={() => setPlayingEpisode(null)} /> : null}
       <div id="seasons-area" className="zyron-seasons-section">
         <div className="zyron-rail-heading"><div><h2>Seasons & episodes</h2><p>Choose a season and explore every chapter</p></div></div>
       </div>
@@ -179,6 +187,7 @@ export default function SeriesDownload({ id, initial = null, error: initialError
                         {st ? <button type="button" className="zyron-show-links" onClick={() => setCollapsed((m) => ({ ...m, [key]: !m[key] }))}>{shut ? "Show download links" : "Hide download links"}</button> : null}
                       </div>
                       <div className="zyron-episode-download">
+                        <button type="button" className="zyron-episode-watch" onClick={() => setPlayingEpisode({ season: s.season_number, episode: e.episode_number })}><span>▶</span> Watch</button>
                         <DlControl label="Download" status={st} onClick={() => dlEpisode(s.season_number, e.episode_number)} />
                       </div>
                       {!shut && st ? <div className="zyron-episode-results"><ResultFold results={epResults[key]} status={st} expect={{ title: tv.name, season: s.season_number, episode: e.episode_number }} /></div> : null}
