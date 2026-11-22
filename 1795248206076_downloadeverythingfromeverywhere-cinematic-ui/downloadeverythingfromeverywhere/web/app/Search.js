@@ -22,7 +22,7 @@ function ResultList({ items }) {
               <span className="name">
                 {r.name} ({r.year || "?"})
               </span>
-              <span className="meta">{kind}</span>
+              <span className="meta">{kind} · {r.year || "New"}</span>
             </span>
           </>
         );
@@ -91,7 +91,7 @@ export default function Search({ trending = [], q = "" }) {
     <div id="wrap">
       <header id="header">
         <h1>
-          <a href="/">downloadeverythingfromeverywhere</a>
+          <a href="/">ZYRON</a>
           {" • "}
           <a href="/suggest">suggest</a>
         </h1>
@@ -101,17 +101,34 @@ export default function Search({ trending = [], q = "" }) {
         <QueueMark />
       </header>
 
+      {!searched && trending.length ? (() => {
+        const featured = trending[0];
+        const route = featured.media_type === "movie" ? "m" : featured.media_type === "anime" ? "a" : "s";
+        return (
+          <section className="zyron-featured" aria-label="Featured title">
+            {featured.poster ? <img src={featured.poster.replace("w342", "w780")} alt="" /> : null}
+            <div className="zyron-featured-shade" />
+            <div className="zyron-featured-copy">
+              <span className="zyron-featured-kicker"><b>Z</b> FEATURED ON ZYRON</span>
+              <h2>{featured.name}</h2>
+              <p>{featured.media_type === "movie" ? "FEATURED MOVIE" : "FEATURED SERIES"} · {featured.year || "DISCOVER NOW"}</p>
+              <a href={`/${route}/${featured.id}`} className="zyron-primary">Explore title <span>›</span></a>
+            </div>
+          </section>
+        );
+      })() : null}
+
       <section className="search-intro" aria-label="Discover movies and shows">
-        <p className="search-eyebrow">Your next watch starts here</p>
-        <h2 className="search-title">Find something <span>extraordinary.</span></h2>
-        <p className="search-subtitle">Explore movies, television and anime from one simple search.</p>
+        <p className="search-eyebrow">A universe of stories</p>
+        <h2 className="search-title">Stories worth <span>staying up for.</span></h2>
+        <p className="search-subtitle">Discover movies, series and anime. Find your next obsession on ZYRON.</p>
       </section>
 
       <form className="search" role="search" action="/" method="get" onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
           name="q"
-          placeholder="search movies, tv, anime"
+          placeholder="Search movies, series and anime…"
           aria-label="Search movies, TV shows, and anime"
           autoComplete="off"
           autoFocus
@@ -132,7 +149,7 @@ export default function Search({ trending = [], q = "" }) {
         <>
           {trending.length ? (
             <section aria-label="trending movies and TV">
-              <h2 className="status">trending movies and TV downloads</h2>
+              <h2 className="section-heading"><span>Trending now</span><small>Popular across ZYRON</small></h2>
               <ResultList items={trending} />
             </section>
           ) : null}

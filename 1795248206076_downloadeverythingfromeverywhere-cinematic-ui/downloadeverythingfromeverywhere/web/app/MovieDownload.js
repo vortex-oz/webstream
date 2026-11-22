@@ -71,11 +71,12 @@ export default function MovieDownload({ id, initial = null, error: initialError 
       <MediaHero item={movie} />
       {err && <p className="status">{err}</p>}
       {movie ? (
-        <p className="dl-status">
-          <DlControl label="find downloads" status={status} onClick={findDownloads} />
-        </p>
+        <section id="download-area" className="download-area">
+          <div className="section-heading"><span>Available downloads</span><small>Choose your preferred quality</small></div>
+          <p className="dl-status"><DlControl label="Find downloads" status={status} onClick={findDownloads} /></p>
+          <ResultFold results={results} status={status} />
+        </section>
       ) : null}
-      <ResultFold results={results} status={status} />
     </SiteShell>
   );
 }
