@@ -268,7 +268,7 @@ export default function GuidePage() {
     <div id="wrap" className="guide-page">
       <header id="header">
         <h1>
-          <a href="/">downloadeverythingfromeverywhere</a>
+          <a href="/">ZYRON</a>
           {" • "}
           <a href="/suggest">suggest</a>
         </h1>
