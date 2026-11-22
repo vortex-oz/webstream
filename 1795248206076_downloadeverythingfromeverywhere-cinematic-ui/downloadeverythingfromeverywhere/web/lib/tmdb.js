@@ -140,6 +140,7 @@ export const loadTrending = cache(async function loadTrending(limit = 50) {
         name: r.media_type === "movie" ? r.title : r.name,
         year: (r.release_date || r.first_air_date || "").slice(0, 4) || null,
         poster: imgUrl(r.poster_path, "w342"),
+        backdrop: imgUrl(r.backdrop_path, "w1280"),
       });
       if (out.length >= limit) break;
     }
