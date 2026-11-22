@@ -51,7 +51,7 @@ async function tmdb(path, query = {}) {
 }
 
 export const loadMovie = cache(async function loadMovie(id) {
-  const movie = await tmdb(`/movie/${id}`, { append_to_response: "external_ids,images" });
+  const movie = await tmdb(`/movie/${id}`, { append_to_response: "external_ids,images,credits" });
     return {
       id: movie.id,
       name: movie.title,
@@ -60,24 +60,38 @@ export const loadMovie = cache(async function loadMovie(id) {
       original_language: movie.original_language || null,
       origin_country: movie.origin_country || movie.production_countries?.map((c) => c.iso_3166_1).filter(Boolean) || [],
       backdrop: pickBackdrop(movie),
+      poster: imgUrl(movie.poster_path, "w500"),
       tagline: movie.tagline || "",
       overview: movie.overview || "",
+      rating: Number(movie.vote_average || 0),
+      voteCount: Number(movie.vote_count || 0),
+      runtime: movie.runtime || null,
+      cast: (movie.credits?.cast || []).slice(0, 10).map((p) => ({ id: p.id, name: p.name, character: p.character || "", photo: imgUrl(p.profile_path, "w185") })),
       tags: tmdbTags(movie, "movie"),
     };
 });
 
 export const loadTv = cache(async function loadTv(id) {
-  const show = await tmdb(`/tv/${id}`, { append_to_response: "external_ids,images" });
+  const show = await tmdb(`/tv/${id}`, { append_to_response: "external_ids,images,credits" });
   const seasonMetas = (show.seasons || []).filter((s) => s.season_number > 0);
   const settled = await Promise.allSettled(
     seasonMetas.map(async (s) => {
       const detail = await tmdb(`/tv/${id}/season/${s.season_number}`);
       return {
         season_number: s.season_number,
+        name: s.name || `Season ${s.season_number}`,
+        overview: s.overview || "",
+        poster: imgUrl(s.poster_path || detail.poster_path, "w500"),
+        air_date: s.air_date || null,
+        episode_count: s.episode_count || (detail.episodes || []).length,
         episodes: (detail.episodes || []).map((e) => ({
           episode_number: e.episode_number,
           name: e.name,
+          overview: e.overview || "",
           air_date: e.air_date,
+          still: imgUrl(e.still_path, "w500"),
+          rating: Number(e.vote_average || 0),
+          runtime: e.runtime || null,
         })),
       };
     }),
@@ -98,8 +112,13 @@ export const loadTv = cache(async function loadTv(id) {
       original_language: show.original_language || null,
       origin_country: show.origin_country || [],
       backdrop: pickBackdrop(show),
+      poster: imgUrl(show.poster_path, "w500"),
       tagline: show.tagline || "",
       overview: show.overview || "",
+      rating: Number(show.vote_average || 0),
+      voteCount: Number(show.vote_count || 0),
+      status: show.status || "",
+      cast: (show.credits?.cast || []).slice(0, 10).map((p) => ({ id: p.id, name: p.name, character: p.character || "", photo: imgUrl(p.profile_path, "w185") })),
       tags: tmdbTags(show, "tv"),
       seasons,
     };

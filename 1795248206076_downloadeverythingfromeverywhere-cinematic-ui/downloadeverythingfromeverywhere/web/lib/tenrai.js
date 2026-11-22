@@ -139,8 +139,11 @@ export async function loadAnime(id) {
     year: yearOf(d),
     imdb_id: null,
     backdrop: backdropOf(d),
+    poster: posterOf(d),
     tagline: "",
     overview: d.synopsis || "",
+    rating: Number(d.score || 0),
+    voteCount: Number(d.scored_by || 0),
     tags,
     seasons: movie ? [] : [{ season_number: seasonOf(`${d.title_english || ""} ${d.title || ""}`), episodes }],
   };

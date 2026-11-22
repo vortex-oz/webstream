@@ -1,8 +1,8 @@
 import { isBlocked } from "./blocked.js";
 
 export const SITE_URL = new URL(process.env.SITE_URL || "http://localhost:3000").origin;
-export const SITE_NAME = "downloadeverythingfromeverywhere";
-export const HOME_TITLE = "Free Download Movies, TV Shows & Anime in HD";
+export const SITE_NAME = "ZYRON";
+export const HOME_TITLE = "Discover Movies, Series & Anime | ZYRON";
 export const SITE_DESC =
   "Free download movies, TV shows & anime in 720p, 1080p & 4K. Direct WEB-DL, BluRay, x265 HEVC, dual audio, small size episodes & season packs from many hosts.";
 export const SITE_KEYWORDS = [
